@@ -11,12 +11,7 @@
 ///      fonts:
 ///       - asset: fonts/AppIcons.ttf
 ///
-/// 
-/// * Entypo, Copyright (C) 2012 by Daniel Bruce
-///         Author:    Daniel Bruce
-///         License:   SIL (http://scripts.sil.org/OFL)
-///         Homepage:  http://www.entypo.com
-///
+
 import 'package:flutter/widgets.dart';
 
 class AppIcons {
@@ -27,4 +22,5 @@ class AppIcons {
 
   static const IconData like_fill = IconData(0xe800, fontFamily: _kFontFam, fontPackage: _kFontPkg);
   static const IconData like = IconData(0xe801, fontFamily: _kFontFam, fontPackage: _kFontPkg);
+  static const IconData home = IconData(0xe802, fontFamily: _kFontFam, fontPackage: _kFontPkg);
 }
