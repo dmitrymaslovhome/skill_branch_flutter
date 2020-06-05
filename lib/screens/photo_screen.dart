@@ -5,13 +5,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FullScreenImage extends StatefulWidget {
-  FullScreenImage({this.altDescription, this.userName, this.name, this.likeCount, this.isLiked, Key key}) : super(key: key);
+  FullScreenImage({
+    this.altDescription,
+    this.userName,
+    this.name,
+    this.likeCount,
+    this.isLiked,
+    this.heroTag,
+    Key key,
+  }) : super(key: key);
 
   final String altDescription;
   final String userName;
   final String name;
   final int likeCount;
   final bool isLiked;
+  final String heroTag;
 
   @override
   State<StatefulWidget> createState() {
@@ -19,12 +28,71 @@ class FullScreenImage extends StatefulWidget {
   }
 }
 
-class _FullScreenImageState extends State<FullScreenImage> {
+class _StaggerAnimation extends StatelessWidget {
+  _StaggerAnimation({Key key, this.controller, this.name, this.userName})
+      : opacityAvatar = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+          parent: controller,
+          curve: Interval(0.0, 0.5, curve: Curves.ease),
+        )),
+        opacityUserName = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+          parent: controller,
+          curve: Interval(0.5, 1.0, curve: Curves.ease),
+        ));
+
+  final Animation<double> controller;
+  final Animation<double> opacityAvatar;
+  final Animation<double> opacityUserName;
+  final String name;
+  final String userName;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      builder: _buildAnimation,
+      animation: controller,
+    );
+  }
+
+  Widget _buildAnimation(BuildContext context, Widget child) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      child: Row(
+        children: <Widget>[
+          Opacity(
+            opacity: opacityAvatar.value,
+            child: UserAvatar(
+                'https://skill-branch.ru/img/speakers/Adechenko.jpg'),
+          ),
+          SizedBox(width: 6),
+          Opacity(
+            opacity: opacityUserName.value,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Text(name, style: AppStyles.h1Black),
+                Text(
+                  userName,
+                  style: AppStyles.h5Black.copyWith(color: AppColors.manatee),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _FullScreenImageState extends State<FullScreenImage>
+    with TickerProviderStateMixin {
   bool isLiked = false;
   int likeCount = 10;
   String description = 'This is Flutter dash. I love him :)';
   String name = 'Kirill Adechenko';
   String userName = '@kaparray';
+  AnimationController _controller;
+  String _heroTag;
 
   @override
   void initState() {
@@ -34,6 +102,17 @@ class _FullScreenImageState extends State<FullScreenImage> {
     if (widget.altDescription != null) description = widget.altDescription;
     if (widget.name != null) name = widget.name;
     if (widget.userName != null) userName = '@' + widget.userName;
+    _heroTag = widget.heroTag;
+    _controller = AnimationController(
+      duration: const Duration(milliseconds: 1500),
+      vsync: this,
+    )..forward().orCancel;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -49,9 +128,13 @@ class _FullScreenImageState extends State<FullScreenImage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Photo(photoLink: kFlutterDash),
+          Hero(
+            tag: _heroTag,
+            child: Photo(photoLink: kFlutterDash),
+          ),
           _createDescription(description),
-          _createUserData(name, userName),
+          _StaggerAnimation(
+              controller: _controller.view, name: name, userName: userName),
           _createButtons(),
         ],
       ),
@@ -70,34 +153,8 @@ class _FullScreenImageState extends State<FullScreenImage> {
     );
   }
 
-  Widget _createUserData(String name, String userName) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      child: Row(
-        children: <Widget>[
-          UserAvatar('https://skill-branch.ru/img/speakers/Adechenko.jpg'),
-          SizedBox(width: 6),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Text(
-                name,
-                style: AppStyles.h1Black
-              ),
-              Text(
-                userName,
-                style: AppStyles.h5Black.copyWith(color: AppColors.manatee),
-              )
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _createButtons() {
-   return Padding(
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,8 +173,14 @@ class _FullScreenImageState extends State<FullScreenImage> {
               });
             },
           ),
-          _createButton(Text('Save', style: AppStyles.h4.copyWith(color: AppColors.white)), AppColors.dodgerBlue),
-          _createButton(Text('Visit', style: AppStyles.h4.copyWith(color: AppColors.white)), AppColors.dodgerBlue),
+          _createButton(
+              Text('Save',
+                  style: AppStyles.h4.copyWith(color: AppColors.white)),
+              AppColors.dodgerBlue),
+          _createButton(
+              Text('Visit',
+                  style: AppStyles.h4.copyWith(color: AppColors.white)),
+              AppColors.dodgerBlue),
         ],
       ),
     );
@@ -132,7 +195,7 @@ class _FullScreenImageState extends State<FullScreenImage> {
         Text(likeCount.toString()),
       ],
     );
-}
+  }
 
   Widget _createButton(Widget body, Color color, {void Function() onTap}) {
     return GestureDetector(

@@ -24,7 +24,7 @@ class _FeedState extends State<Feed> {
           itemBuilder: (BuildContext context, int index) {
             return Column(
               children: <Widget>[
-                _buildItem(),
+                _buildItem('Item$index'),
                 Divider(
                   thickness: 2,
                   color: AppColors.mercury,
@@ -35,21 +35,29 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  Widget _buildItem() {
+  Widget _buildItem(String itemTag) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        GestureDetector(
-          child: Photo(photoLink: kFlutterDash),
-          onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => FullScreenImage()));
-          },
-        ),
+        Hero(
+            tag: itemTag,
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute<void>(
+                      builder: (context) => FullScreenImage(
+                            heroTag: itemTag,
+                          )));
+                },
+                child: Photo(photoLink: kFlutterDash),
+              ),
+            )),
         _buildPhotoMeta(),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Text(
-            'This is Flutter dash. I love him :)',
+            itemTag + ' This is Flutter dash. I love him :)',
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
             style: AppStyles.h3.copyWith(color: AppColors.black),
