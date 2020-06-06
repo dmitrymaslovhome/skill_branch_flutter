@@ -14,6 +14,7 @@ class FullScreenImage extends StatefulWidget {
     this.heroTag,
     Key key,
     this.photo,
+    this.userPhoto,
   }) : super(key: key);
 
   final String altDescription;
@@ -23,6 +24,7 @@ class FullScreenImage extends StatefulWidget {
   final bool isLiked;
   final String heroTag;
   final String photo;
+  final String userPhoto;
 
   @override
   State<StatefulWidget> createState() {
@@ -31,8 +33,13 @@ class FullScreenImage extends StatefulWidget {
 }
 
 class _StaggerAnimation extends StatelessWidget {
-  _StaggerAnimation({Key key, this.controller, this.name, this.userName})
-      : opacityAvatar = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
+  _StaggerAnimation({
+    Key key,
+    this.controller,
+    this.name,
+    this.userName,
+    this.userPhoto,
+  })  : opacityAvatar = Tween(begin: 0.0, end: 1.0).animate(CurvedAnimation(
           parent: controller,
           curve: Interval(0.0, 0.5, curve: Curves.ease),
         )),
@@ -46,6 +53,7 @@ class _StaggerAnimation extends StatelessWidget {
   final Animation<double> opacityUserName;
   final String name;
   final String userName;
+  final String userPhoto;
 
   @override
   Widget build(BuildContext context) {
@@ -62,8 +70,7 @@ class _StaggerAnimation extends StatelessWidget {
         children: <Widget>[
           Opacity(
             opacity: opacityAvatar.value,
-            child: UserAvatar(
-                'https://skill-branch.ru/img/speakers/Adechenko.jpg'),
+            child: UserAvatar(userPhoto),
           ),
           SizedBox(width: 6),
           Opacity(
@@ -96,6 +103,7 @@ class _FullScreenImageState extends State<FullScreenImage>
   AnimationController _controller;
   String _heroTag;
   String photo = kFlutterDash;
+  String userPhoto = 'https://skill-branch.ru/img/speakers/Adechenko.jpg';
 
   @override
   void initState() {
@@ -106,6 +114,7 @@ class _FullScreenImageState extends State<FullScreenImage>
     if (widget.name != null) name = widget.name;
     if (widget.userName != null) userName = '@' + widget.userName;
     if (widget.photo != null) photo = widget.photo;
+    if (widget.userPhoto != null) userPhoto = widget.userPhoto;
     _heroTag = widget.heroTag;
     _controller = AnimationController(
       duration: const Duration(milliseconds: 1500),
@@ -138,7 +147,11 @@ class _FullScreenImageState extends State<FullScreenImage>
           ),
           _createDescription(description),
           _StaggerAnimation(
-              controller: _controller.view, name: name, userName: userName),
+            controller: _controller.view,
+            name: name,
+            userName: userName,
+            userPhoto: userPhoto,
+          ),
           _createButtons(),
         ],
       ),
