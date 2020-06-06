@@ -13,6 +13,7 @@ class FullScreenImage extends StatefulWidget {
     this.isLiked,
     this.heroTag,
     Key key,
+    this.photo,
   }) : super(key: key);
 
   final String altDescription;
@@ -21,6 +22,7 @@ class FullScreenImage extends StatefulWidget {
   final int likeCount;
   final bool isLiked;
   final String heroTag;
+  final String photo;
 
   @override
   State<StatefulWidget> createState() {
@@ -93,6 +95,7 @@ class _FullScreenImageState extends State<FullScreenImage>
   String userName = '@kaparray';
   AnimationController _controller;
   String _heroTag;
+  String photo = kFlutterDash;
 
   @override
   void initState() {
@@ -102,6 +105,7 @@ class _FullScreenImageState extends State<FullScreenImage>
     if (widget.altDescription != null) description = widget.altDescription;
     if (widget.name != null) name = widget.name;
     if (widget.userName != null) userName = '@' + widget.userName;
+    if (widget.photo != null) photo = widget.photo;
     _heroTag = widget.heroTag;
     _controller = AnimationController(
       duration: const Duration(milliseconds: 1500),
@@ -130,7 +134,7 @@ class _FullScreenImageState extends State<FullScreenImage>
         children: <Widget>[
           Hero(
             tag: _heroTag,
-            child: Photo(photoLink: kFlutterDash),
+            child: Photo(photoLink: photo),
           ),
           _createDescription(description),
           _StaggerAnimation(
