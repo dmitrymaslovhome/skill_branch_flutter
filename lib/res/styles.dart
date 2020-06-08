@@ -61,7 +61,7 @@ class AppStyles {
     fontStyle: FontStyle.normal,
   );
 
-  static const TextTheme buildAppTextTheme() {
+  static TextTheme buildAppTextTheme() {
     return TextTheme(
       headline1: TextStyle(
         fontSize: 18,
