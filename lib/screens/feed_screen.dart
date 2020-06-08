@@ -24,7 +24,7 @@ class _FeedState extends State<Feed> {
           itemBuilder: (BuildContext context, int index) {
             return Column(
               children: <Widget>[
-                _buildItem('Item$index'),
+                _buildItem(context,'Item$index'),
                 Divider(
                   thickness: 2,
                   color: AppColors.mercury,
@@ -35,7 +35,7 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  Widget _buildItem(String itemTag) {
+  Widget _buildItem(BuildContext context,String itemTag) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -53,21 +53,21 @@ class _FeedState extends State<Feed> {
                 child: Photo(photoLink: kFlutterDash),
               ),
             )),
-        _buildPhotoMeta(),
+        _buildPhotoMeta(context),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child: Text(
             itemTag + ' This is Flutter dash. I love him :)',
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: AppStyles.h3.copyWith(color: AppColors.black),
+            style: Theme.of(context).textTheme.headline3.copyWith(color: AppColors.black),
           ),
         )
       ],
     );
   }
 
-  Widget _buildPhotoMeta() {
+  Widget _buildPhotoMeta(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Row(
@@ -81,10 +81,10 @@ class _FeedState extends State<Feed> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('Kirill Adechenko', style: AppStyles.h2Black),
+                  Text('Kirill Adechenko', style: Theme.of(context).textTheme.headline2),
                   Text(
                     '@kaparray',
-                    style: AppStyles.h5Black.copyWith(color: AppColors.manatee),
+                    style: Theme.of(context).textTheme.headline5.copyWith(color: AppColors.manatee),
                   )
                 ],
               ),

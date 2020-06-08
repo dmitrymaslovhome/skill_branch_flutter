@@ -79,10 +79,10 @@ class _StaggerAnimation extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text(name, style: AppStyles.h1Black),
+                Text(name, style: Theme.of(context).textTheme.headline1),
                 Text(
                   userName,
-                  style: AppStyles.h5Black.copyWith(color: AppColors.manatee),
+                  style: Theme.of(context).textTheme.headline5.copyWith(color: AppColors.manatee),
                 )
               ],
             ),
@@ -145,32 +145,32 @@ class _FullScreenImageState extends State<FullScreenImage>
             tag: _heroTag,
             child: Photo(photoLink: photo),
           ),
-          _createDescription(description),
+          _createDescription(context, description),
           _StaggerAnimation(
             controller: _controller.view,
             name: name,
             userName: userName,
             userPhoto: userPhoto,
           ),
-          _createButtons(),
+          _createButtons(context),
         ],
       ),
     );
   }
 
-  Widget _createDescription(String text) {
+  Widget _createDescription(BuildContext context,String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Text(
         text,
         maxLines: 3,
         overflow: TextOverflow.ellipsis,
-        style: AppStyles.h3,
+        style: Theme.of(context).textTheme.headline3,
       ),
     );
   }
 
-  Widget _createButtons() {
+  Widget _createButtons(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Row(
@@ -192,11 +192,11 @@ class _FullScreenImageState extends State<FullScreenImage>
           ),
           _createButton(
               Text('Save',
-                  style: AppStyles.h4.copyWith(color: AppColors.white)),
+                  style: Theme.of(context).textTheme.headline4.copyWith(color: AppColors.white)),
               AppColors.dodgerBlue),
           _createButton(
               Text('Visit',
-                  style: AppStyles.h4.copyWith(color: AppColors.white)),
+                  style: Theme.of(context).textTheme.headline4.copyWith(color: AppColors.white)),
               AppColors.dodgerBlue),
         ],
       ),
