@@ -82,7 +82,10 @@ class _StaggerAnimation extends StatelessWidget {
                 Text(name, style: Theme.of(context).textTheme.headline1),
                 Text(
                   userName,
-                  style: Theme.of(context).textTheme.headline5.copyWith(color: AppColors.manatee),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline5
+                      .copyWith(color: AppColors.manatee),
                 )
               ],
             ),
@@ -137,6 +140,15 @@ class _FullScreenImageState extends State<FullScreenImage>
           icon: Icon(CupertinoIcons.back),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.more_vert),
+            onPressed: () => showModalBottomSheet<void>(
+              context: context,
+              builder: (BuildContext context) => ClaimBottomSheet(),
+            ),
+          ),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -158,7 +170,7 @@ class _FullScreenImageState extends State<FullScreenImage>
     );
   }
 
-  Widget _createDescription(BuildContext context,String text) {
+  Widget _createDescription(BuildContext context, String text) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       child: Text(
@@ -192,11 +204,17 @@ class _FullScreenImageState extends State<FullScreenImage>
           ),
           _createButton(
               Text('Save',
-                  style: Theme.of(context).textTheme.headline4.copyWith(color: AppColors.white)),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4
+                      .copyWith(color: AppColors.white)),
               AppColors.dodgerBlue),
           _createButton(
               Text('Visit',
-                  style: Theme.of(context).textTheme.headline4.copyWith(color: AppColors.white)),
+                  style: Theme.of(context)
+                      .textTheme
+                      .headline4
+                      .copyWith(color: AppColors.white)),
               AppColors.dodgerBlue),
         ],
       ),
