@@ -119,7 +119,7 @@ class _FullScreenImageState extends State<FullScreenImage>
     _controller = AnimationController(
       duration: const Duration(milliseconds: 1500),
       vsync: this,
-    )..forward().orCancel;
+    )..forward();
   }
 
   @override
