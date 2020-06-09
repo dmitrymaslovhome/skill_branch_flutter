@@ -3,6 +3,7 @@ import 'package:FlutterGalleryApp/screens/feed_screen.dart';
 import 'package:FlutterGalleryApp/widgets/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 
 class FullScreenImage extends StatefulWidget {
   FullScreenImage({
@@ -203,19 +204,53 @@ class _FullScreenImageState extends State<FullScreenImage>
             },
           ),
           _createButton(
-              Text('Save',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4
-                      .copyWith(color: AppColors.white)),
-              AppColors.dodgerBlue),
+            Text(
+              'Save',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4
+                  .copyWith(color: AppColors.white),
+            ),
+            AppColors.dodgerBlue,
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: new Text("Downloading photos"),
+                    content:
+                        new Text("Are you sure you want to upload a photo?"),
+                    actions: <Widget>[
+                      new FlatButton(
+                        child: new Text("Download"),
+                        onPressed: () {
+                          GallerySaver.saveImage(photo)
+                              .then((value) => print('Image is saved'));
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                      new FlatButton(
+                        child: new Text("Close"),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+          ),
           _createButton(
-              Text('Visit',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4
-                      .copyWith(color: AppColors.white)),
-              AppColors.dodgerBlue),
+            Text(
+              'Visit',
+              style: Theme.of(context)
+                  .textTheme
+                  .headline4
+                  .copyWith(color: AppColors.white),
+            ),
+            AppColors.dodgerBlue,
+          ),
         ],
       ),
     );
