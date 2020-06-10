@@ -1,8 +1,16 @@
+import 'dart:async';
+
+import 'package:FlutterGalleryApp/main.dart';
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/feed_screen.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatefulWidget {
+  const Home(this.onConnectivityChanged);
+
+  final Stream<ConnectivityResult> onConnectivityChanged;
+
   @override
   State<StatefulWidget> createState() {
     return _HomeState();
@@ -11,11 +19,66 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   int currentTab = 0;
+  StreamSubscription subscription;
   List<Widget> pages = [
     Feed(),
     Container(),
     Container(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    subscription = widget.onConnectivityChanged.listen(
+      (ConnectivityResult result) {
+        switch (result) {
+          case ConnectivityResult.wifi:
+            // Вызовете удаление Overlay тут
+            ConnectivityOverlay().removeOverlay(context);
+            break;
+          case ConnectivityResult.mobile:
+            // Вызовете удаление Overlay тут
+            ConnectivityOverlay().removeOverlay(context);
+            break;
+          case ConnectivityResult.none:
+            // Вызовете отображения Overlay тут
+            ConnectivityOverlay().showOverlay(
+              context,
+              Padding(
+                padding: EdgeInsetsDirectional.only(top: 40),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: ClipRRect(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                      decoration: BoxDecoration(
+                        color: AppColors.alto,
+                        borderRadius: BorderRadius.circular(8),
+                        boxShadow: [
+                          const BoxShadow(color: Colors.black12, blurRadius: 2),
+                        ],
+                      ),
+                      child: Text(
+                        'No internet connection',
+                        maxLines: 1,
+                        style: Theme.of(context).textTheme.headline5,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            );
+            break;
+        }
+      },
+    );
+  }
+
+  @override
+  void dispose() {
+    subscription.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

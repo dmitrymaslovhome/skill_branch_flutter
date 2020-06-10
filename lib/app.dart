@@ -1,5 +1,6 @@
 import 'package:FlutterGalleryApp/res/res.dart';
 import 'package:FlutterGalleryApp/screens/home.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 
 class MyApp extends StatelessWidget {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
         textTheme: AppStyles.buildAppTextTheme(),
       ),
-      home: Home(),
+      home: Home(Connectivity().onConnectivityChanged),
     );
   }
 }
