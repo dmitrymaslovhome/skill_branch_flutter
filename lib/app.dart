@@ -33,6 +33,8 @@ class MyApp extends StatelessWidget {
             return CupertinoPageRoute(builder: (context) => route, settings: args.routeSettings);
           }
         }
+        assert(false, 'Need to implement ${settings.name}');
+        return null; 
       },
       title: 'Flutter Demo',
       theme: ThemeData(
