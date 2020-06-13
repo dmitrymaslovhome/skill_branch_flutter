@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:FlutterGalleryApp/res/res.dart';
+import 'package:FlutterGalleryApp/screens/404.dart';
 import 'package:FlutterGalleryApp/screens/home.dart';
 import 'package:FlutterGalleryApp/screens/photo_screen.dart';
 import 'package:connectivity/connectivity.dart';
@@ -28,13 +29,20 @@ class MyApp extends StatelessWidget {
             userPhoto: args.userPhoto,
           );
           if (Platform.isAndroid) {
-            return MaterialPageRoute(builder: (context) => route, settings: args.routeSettings);
+            return MaterialPageRoute(
+                builder: (context) => route, settings: args.routeSettings);
           } else if (Platform.isIOS) {
-            return CupertinoPageRoute(builder: (context) => route, settings: args.routeSettings);
+            return CupertinoPageRoute(
+                builder: (context) => route, settings: args.routeSettings);
           }
         }
         assert(false, 'Need to implement ${settings.name}');
-        return null; 
+        if (Platform.isAndroid) {
+          return MaterialPageRoute(builder: (context) => Screen404());
+        } else if (Platform.isIOS) {
+          return CupertinoPageRoute(builder: (context) => Screen404());
+        }
+        return null;
       },
       title: 'Flutter Demo',
       theme: ThemeData(
