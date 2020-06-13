@@ -24,7 +24,7 @@ class _FeedState extends State<Feed> {
           itemBuilder: (BuildContext context, int index) {
             return Column(
               children: <Widget>[
-                _buildItem(context,'Item$index'),
+                _buildItem(context, 'Item$index'),
                 Divider(
                   thickness: 2,
                   color: AppColors.mercury,
@@ -35,7 +35,7 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  Widget _buildItem(BuildContext context,String itemTag) {
+  Widget _buildItem(BuildContext context, String itemTag) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -45,10 +45,16 @@ class _FeedState extends State<Feed> {
               color: Colors.transparent,
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute<void>(
-                      builder: (context) => FullScreenImage(
-                            heroTag: itemTag,
-                          )));
+                  Navigator.pushNamed(
+                    context,
+                    '/fullScreenImage',
+                    arguments: FullScreenImageArguments(
+                      heroTag: itemTag,
+                      routeSettings: RouteSettings(
+                        arguments: 'Some title',
+                      ),
+                    ),
+                  );
                 },
                 child: Photo(photoLink: kFlutterDash),
               ),
@@ -60,7 +66,10 @@ class _FeedState extends State<Feed> {
             itemTag + ' This is Flutter dash. I love him :)',
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.headline3.copyWith(color: AppColors.black),
+            style: Theme.of(context)
+                .textTheme
+                .headline3
+                .copyWith(color: AppColors.black),
           ),
         )
       ],
@@ -81,10 +90,14 @@ class _FeedState extends State<Feed> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  Text('Kirill Adechenko', style: Theme.of(context).textTheme.headline2),
+                  Text('Kirill Adechenko',
+                      style: Theme.of(context).textTheme.headline2),
                   Text(
                     '@kaparray',
-                    style: Theme.of(context).textTheme.headline5.copyWith(color: AppColors.manatee),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline5
+                        .copyWith(color: AppColors.manatee),
                   )
                 ],
               ),

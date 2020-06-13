@@ -5,6 +5,32 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 
+class FullScreenImageArguments {
+  FullScreenImageArguments({
+    this.altDescription,
+    this.userName,
+    this.name,
+    this.likeCount,
+    this.isLiked,
+    this.heroTag,
+    this.photo,
+    this.userPhoto,
+    this.key,
+    this.routeSettings,
+  });
+
+  final String altDescription;
+  final String userName;
+  final String name;
+  final int likeCount;
+  final bool isLiked;
+  final String heroTag;
+  final String photo;
+  final String userPhoto;
+  final Key key;
+  final RouteSettings routeSettings;
+}
+
 class FullScreenImage extends StatefulWidget {
   FullScreenImage({
     this.altDescription,
@@ -217,20 +243,19 @@ class _FullScreenImageState extends State<FullScreenImage>
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: new Text("Downloading photos"),
-                    content:
-                        new Text("Are you sure you want to upload a photo?"),
+                    title: Text("Downloading photos"),
+                    content: Text("Are you sure you want to upload a photo?"),
                     actions: <Widget>[
-                      new FlatButton(
-                        child: new Text("Download"),
+                      FlatButton(
+                        child: Text("Download"),
                         onPressed: () {
                           GallerySaver.saveImage(photo)
                               .then((value) => print('Image is saved'));
                           Navigator.of(context).pop();
                         },
                       ),
-                      new FlatButton(
-                        child: new Text("Close"),
+                      FlatButton(
+                        child: Text("Close"),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -250,6 +275,33 @@ class _FullScreenImageState extends State<FullScreenImage>
                   .copyWith(color: AppColors.white),
             ),
             AppColors.dodgerBlue,
+            onTap: () async {
+              OverlayEntry overlayEntry =
+                  OverlayEntry(builder: (BuildContext context) {
+                return Positioned(
+                  top: MediaQuery.of(context).viewInsets.top + 50,
+                  child: Material(
+                    color: Colors.transparent,
+                    child: Container(
+                      alignment: Alignment.center,
+                      width: MediaQuery.of(context).size.width,
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20),
+                        padding: EdgeInsets.fromLTRB(16, 10, 16, 10),
+                        decoration: BoxDecoration(
+                          color: AppColors.mercury,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text('SkillBranch'),
+                      ),
+                    ),
+                  ),
+                );
+              });
+              Overlay.of(context).insert(overlayEntry);
+              await Future.delayed(Duration(seconds: 1));
+              overlayEntry.remove();
+            },
           ),
         ],
       ),
