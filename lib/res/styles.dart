@@ -110,7 +110,6 @@ TextTheme buildAppTextTheme() {
     headline6: TextStyle(
       fontSize: 12,
       height: 20 / 12,
-      color: AppColors.alto,
       fontWeight: FontWeight.w300,
       fontFamily: 'Roboto',
       fontStyle: FontStyle.normal,
